@@ -1,0 +1,312 @@
+#pip install google-search-results transformers scipy openpyxl nltk matplotlib seaborn scikit-learn pandas
+#pip install transformers
+# Data Collection
+from serpapi import GoogleSearch
+import pandas as pd
+from nltk.sentiment import SentimentIntensityAnalyzer
+from transformers import pipeline
+import numpy as np
+from scipy.stats import pearsonr
+import matplotlib.pyplot as plt
+import warnings
+warnings.filterwarnings("ignore")
+
+# Set up the SerpAPI parameters
+search_params = {
+    "engine": "google_scholar",
+    "q": "climate change",
+    "api_key": "4a6dfdee6e6a34ad6c6659f901f615b3188e8020ae1d9f1e10bf1aa6d50e7057",
+    "num": 100,
+    "start": 0
+}
+
+# Lists to store data
+paper_titles = []
+paper_abstracts = []
+citation_counts = []
+pub_dates = []
+
+# Specify the total number of results you want to collect
+total_results = 200
+total_pages = total_results // search_params["num"]
+
+for pg in range(total_pages):
+    search_params["start"] = pg * search_params["num"]
+    search = GoogleSearch(search_params)
+    search_results = search.get_dict()
+    scholarly_papers = search_results.get("organic_results", [])
+
+    for paper in scholarly_papers:
+        paper_titles.append(paper.get('title', ''))
+        paper_abstracts.append(paper.get('snippet', ''))
+        citation_counts.append(int(paper.get('inline_links', {}).get('cited_by', {}).get('total', 0)))
+        pub_dates.append(paper.get('publication_info', {}).get('summary', ''))
+
+# Create a DataFrame
+papers_df = pd.DataFrame({
+    'Title': paper_titles,
+    'Abstract': paper_abstracts,
+    'Citation Count': citation_counts,
+    'Publication Date': pub_dates
+})
+
+# Check for missing abstracts
+print(f"Total papers collected: {len(papers_df)}")
+print(f"Missing abstracts: {papers_df['Abstract'].isnull().sum()}")
+# Step 1: Sentiment Analysis with VADER
+sia = SentimentIntensityAnalyzer()
+
+def get_vader_sentiment_score(text):
+    if text:
+        score = sia.polarity_scores(text)['compound']
+        return score
+    return None
+# Apply VADER sentiment analysis to the abstracts
+papers_df['VADER Sentiment Score'] = papers_df['Abstract'].apply(get_vader_sentiment_score)
+# Check sentiment scores
+print(papers_df[['Abstract', 'VADER Sentiment Score']].head())
+
+# Step 2: Sentiment Analysis with BERT
+# Load the BERT sentiment analysis model
+bert_sentiment_pipeline = pipeline("sentiment-analysis")
+
+def get_bert_sentiment(text):
+    if text:
+        result = bert_sentiment_pipeline(text)[0]
+        # Assign a numerical score based on label
+        if result['label'] == 'POSITIVE':
+            return 1.0
+        elif result['label'] == 'NEGATIVE':
+            return -1.0
+        else:
+            return 0.0
+    return None
+
+# Apply BERT sentiment analysis to the abstracts
+papers_df['BERT Sentiment Score'] = papers_df['Abstract'].apply(get_bert_sentiment)
+print(papers_df[['Abstract', 'BERT Sentiment Score']].head())
+# Step 3: Apply softmax to VADER sentiment scores
+def softmax(scores):
+    e_scores = np.exp(scores - np.max(scores))
+    return e_scores / e_scores.sum()
+
+# Remove rows with None sentiment scores before applying softmax
+valid_vader_scores = papers_df['VADER Sentiment Score'].dropna().values
+if valid_vader_scores.size > 0:
+    softmax_vader_scores = softmax(valid_vader_scores)
+    papers_df.loc[papers_df['VADER Sentiment Score'].notnull(), 'VADER Softmax Score'] = softmax_vader_scores
+# Step 4: Tone Classification and Correlation Analysis
+def classify_tone(score):
+    if score >= 0.05:
+        return 'Positive'
+    elif score <= -0.05:
+        return 'Negative'
+    return 'Neutral'
+
+papers_df['VADER Tone'] = papers_df['VADER Sentiment Score'].apply(classify_tone)
+papers_df['BERT Tone'] = papers_df['BERT Sentiment Score'].apply(classify_tone)
+papers_df['VADER Sentiment Label'] = papers_df['VADER Sentiment Score'].apply(classify_tone)
+# Map tones to numeric values for correlation analysis
+tone_numeric_mapping = {'Positive': 1, 'Neutral': 0, 'Negative': -1}
+papers_df['VADER Tone Numeric'] = papers_df['VADER Tone'].map(tone_numeric_mapping)
+papers_df['BERT Tone Numeric'] = papers_df['BERT Tone'].map(tone_numeric_mapping)
+# Correlation Analysis
+if 'VADER Softmax Score' in papers_df.columns and 'Citation Count' in papers_df.columns:
+    correlation_vader, p_value_vader = pearsonr(papers_df['VADER Softmax Score'].dropna(), papers_df['Citation Count'].dropna())
+    print(f"Correlation between VADER softmax score and citation count: {correlation_vader} (p-value: {p_value_vader})")
+if 'BERT Tone Numeric' in papers_df.columns and 'Citation Count' in papers_df.columns:
+    correlation_bert, p_value_bert = pearsonr(papers_df['BERT Tone Numeric'].dropna(), papers_df['Citation Count'].dropna())
+    print(f"Correlation between BERT tone and citation count: {correlation_bert} (p-value: {p_value_bert})")
+# Extract examples of papers with different tones for VADER
+for tone in ['Positive', 'Neutral', 'Negative']:
+    examples = papers_df[papers_df['VADER Tone'] == tone].sample(n=10, random_state=42)
+    print(f"\nExamples of {tone} papers using VADER:")
+    print(examples[['Title', 'Abstract', 'Citation Count']])
+
+# Extract examples of papers with different tones for BERT
+for tone in ['Positive', 'Neutral', 'Negative']:
+    tone_examples = papers_df[papers_df['BERT Tone'] == tone]
+    if len(tone_examples) > 0:
+        examples = tone_examples.sample(n=min(10, len(tone_examples)), random_state=42)
+        print(f"\nExamples of {tone} papers using BERT:")
+        print(examples[['Title', 'Abstract', 'Citation Count']])
+    else:
+        print(f"\nNo {tone} papers found using BERT.")
+# Save VADER and BERT results to separate CSV files
+papers_df[['Title', 'Abstract', 'Citation Count', 'VADER Sentiment Score', 'VADER Tone', 'VADER Softmax Score']].to_csv('papers_vader_analysis.csv', index=False)
+papers_df[['Title', 'Abstract', 'Citation Count', 'BERT Sentiment Score', 'BERT Tone']].to_csv('papers_bert_analysis.csv', index=False)
+# Display the final DataFrame for analysis
+display(papers_df)
+
+# Sentiment Distribution
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+
+
+plt.figure(figsize=(10, 6))
+sns.countplot(data=papers_df, x='VADER Tone', palette='viridis')
+plt.title('Sentiment Distribution (VADER)')
+plt.xlabel('Sentiment')
+plt.ylabel('Count')
+plt.show()
+plt.figure(figsize=(10, 6))
+sns.countplot(data=papers_df, x='BERT Tone', palette='viridis')
+plt.title('Sentiment Distribution (BERT)')
+plt.xlabel('Sentiment')
+plt.ylabel('Count')
+plt.show()
+# Citations vs Sentiment Score
+
+
+# Now, we can plot the box plot
+plt.figure(figsize=(12, 8))
+sns.boxplot(x='VADER Sentiment Label', y='Citation Count', data=papers_df, palette='Set3')
+plt.title('Citation Counts by VADER Sentiment Label', fontsize=16)
+plt.xlabel('VADER Sentiment Label', fontsize=14)
+plt.ylabel('Citation Count', fontsize=14)
+plt.xticks(fontsize=12)
+plt.yticks(fontsize=12)
+plt.grid(axis='y', linestyle='--', alpha=0.7)
+plt.tight_layout()
+plt.show()
+
+
+# Sentiment and Topic Modeling
+plt.figure(figsize=(12, 8))
+sns.violinplot(x='BERT Sentiment Score', y='Citation Count', data=papers_df, palette='muted')
+plt.title('Citations vs BERT Sentiment Score')
+plt.xlabel('BERT Sentiment Score')
+plt.ylabel('Citation Count')
+plt.show()
+from sklearn.decomposition import LatentDirichletAllocation
+from sklearn.feature_extraction.text import CountVectorizer
+
+# Vectorize the abstracts
+text_vectorizer = CountVectorizer(max_df=0.95, min_df=2, stop_words='english')
+doc_term_matrix = text_vectorizer.fit_transform(papers_df['Abstract'])
+
+# Apply LDA for topic modeling
+lda_model = LatentDirichletAllocation(n_components=5, random_state=42)
+lda_model.fit(doc_term_matrix)
+
+# Display the topics
+topic_keywords = lda_model.components_
+for idx, topic in enumerate(topic_keywords):
+    print(f"Topic {idx+1}:")
+    print(", ".join([text_vectorizer.get_feature_names_out()[i] for i in topic.argsort()[-10:]]))
+import numpy as np
+
+# Summary of the Most Cited Paper
+most_cited_index = np.argmax(papers_df['Citation Count'])
+most_cited_title = papers_df['Title'].iloc[most_cited_index]
+most_cited_count = papers_df['Citation Count'].iloc[most_cited_index]
+most_cited_vader_sentiment = papers_df['VADER Sentiment Score'].iloc[most_cited_index]
+most_cited_bert_sentiment = papers_df['BERT Sentiment Score'].iloc[most_cited_index]
+
+print(f"Most cited paper: \"{most_cited_title}\" with {most_cited_count} citations.")
+print(f"VADER Sentiment Score of this paper's abstract: {most_cited_vader_sentiment:.4f}")
+print(f"BERT Sentiment Score of this paper's abstract: {most_cited_bert_sentiment:.4f}")
+
+# Summary statistics for BERT sentiment scores
+print(f"\nBERT Sentiment Scores Summary:")
+print(f"Mean: {np.mean(papers_df['BERT Sentiment Score']):.4f}")
+print(f"Median: {np.median(papers_df['BERT Sentiment Score']):.4f}")
+print(f"Standard Deviation: {np.std(papers_df['BERT Sentiment Score']):.4f}")
+
+# Summary statistics for VADER sentiment scores
+print(f"\nVADER Sentiment Scores Summary:")
+print(f"Mean: {np.mean(papers_df['VADER Sentiment Score']):.4f}")
+print(f"Median: {np.median(papers_df['VADER Sentiment Score']):.4f}")
+print(f"Standard Deviation: {np.std(papers_df['VADER Sentiment Score']):.4f}")
+
+# Top Ten Most Cited Papers
+
+top_ten_cited = papers_df.nlargest(10, 'Citation Count')[['Title', 'Citation Count']]
+
+plt.figure(figsize=(10, 6))
+sns.barplot(x='Citation Count', y='Title', data=top_ten_cited, palette='viridis')
+plt.title('Top Ten Most Cited Papers')
+plt.xlabel('Citation Count')
+plt.ylabel('Paper Title')
+plt.show()
+
+!pip install vaderSentiment google-search-results
+import pandas as pd
+from serpapi import GoogleSearch
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+
+# Initialize the VADER sentiment analyzer
+analyzer = SentimentIntensityAnalyzer()
+
+# Function to calculate sentiment score
+def calculate_sentiment(text):
+    return analyzer.polarity_scores(text)['compound']
+
+# Function to classify risk based on text and sentiment score
+def identify_risk(text, sentiment_score):
+    risk_keywords = ['risk', 'danger', 'uncertain', 'hazard', 'threat']
+    if any(word in text.lower() for word in risk_keywords) or sentiment_score <= -0.3:
+        return 'Risk'
+    return 'No Risk'
+
+# Google Scholar API search parameters
+search_params = {
+    "engine": "google_scholar",
+    "hl": "en",
+    "num": 10,
+    "start": 0,
+    "api_key": "4a6dfdee6e6a34ad6c6659f901f615b3188e8020ae1d9f1e10bf1aa6d50e7057",
+}
+
+# List of topics for collection
+topics = ["biology", "chemistry", "physics", "information technology"]
+
+# Initialize lists to store paper information
+total_pages = 3
+# Loop through each topic and collect data
+for topic in topics:
+    search_params["q"] = topic
+    paper_titles, paper_abstracts, citation_counts, pub_dates = [], [], [], []
+
+    for pg in range(total_pages):
+        search_params["start"] = pg * search_params["num"]
+        search = GoogleSearch(search_params)
+        search_results = search.get_dict()
+        scholarly_papers = search_results.get("organic_results", [])
+
+        # Parse paper data
+        for paper in scholarly_papers:
+            paper_titles.append(paper.get('title', ''))
+            paper_abstracts.append(paper.get('snippet', ''))
+            citation_counts.append(int(paper.get('inline_links', {}).get('cited_by', {}).get('total', 0)))
+            pub_dates.append(paper.get('publication_info', {}).get('summary', ''))
+
+    # Create DataFrame for the topic
+    topic_df = pd.DataFrame({
+        'Title': paper_titles,
+        'Abstract': paper_abstracts,
+        'Citation Count': citation_counts,
+        'Publication Date': pub_dates
+    })
+
+    # Apply VADER sentiment analysis to the abstracts and classify risk
+    topic_df['VADER Sentiment Score'] = topic_df['Abstract'].apply(calculate_sentiment)
+    topic_df['Risk'] = topic_df.apply(lambda row: identify_risk(row['Abstract'], row['VADER Sentiment Score']), axis=1)
+
+    # Save the results to CSV
+    topic_df.to_csv(f'{topic}_papers.csv', index=False)
+    print(f"Data collection for {topic} completed. Saved to {topic}_papers.csv.")
+
+    # Display a few examples with Risk and No Risk classification
+    for risk_status in ['Risk', 'No Risk']:
+        filtered_df = topic_df[topic_df['Risk'] == risk_status]
+        sample_size = min(5, len(filtered_df))
+
+        if sample_size > 0:
+            examples = filtered_df.sample(n=sample_size, random_state=42)
+            print(f"\nExamples of {risk_status} papers for {topic}:")
+            print(examples[['Title', 'Abstract', 'Risk', 'VADER Sentiment Score']])
+        else:
+            print(f"\nNo examples of {risk_status} papers available for {topic}.")
