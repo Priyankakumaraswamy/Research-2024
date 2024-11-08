@@ -1,0 +1,13 @@
+def classify_tone(score):
+    if score >= 0.05:
+        return 'Positive'
+    elif score <= -0.05:
+        return 'Negative'
+    return 'Neutral'
+
+papers_df['VADER Tone'] = papers_df['VADER Sentiment Score'].apply(classify_tone)
+papers_df['BERT Tone'] = papers_df['BERT Sentiment Score'].apply(classify_tone)
+papers_df['VADER Sentiment Label'] = papers_df['VADER Sentiment Score'].apply(classify_tone)
+tone_numeric_mapping = {'Positive': 1, 'Neutral': 0, 'Negative': -1}
+papers_df['VADER Tone Numeric'] = papers_df['VADER Tone'].map(tone_numeric_mapping)
+papers_df['BERT Tone Numeric'] = papers_df['BERT Tone'].map(tone_numeric_mapping)
