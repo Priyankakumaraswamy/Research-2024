@@ -1,0 +1,48 @@
+from serpapi import GoogleSearch
+import pandas as pd
+from nltk.sentiment import SentimentIntensityAnalyzer
+from transformers import pipeline
+import numpy as np
+from scipy.stats import pearsonr
+import matplotlib.pyplot as plt
+import warnings
+warnings.filterwarnings("ignore")
+
+# Set up the SerpAPI parameters
+search_params = {
+    "engine": "google_scholar",
+    "q": "climate change",
+    "api_key": "4a6dfdee6e6a34ad6c6659f901f615b3188e8020ae1d9f1e10bf1aa6d50e7057",
+    "num": 100,
+    "start": 0
+}
+
+# Lists to store data
+paper_titles = []
+paper_abstracts = []
+citation_counts = []
+pub_dates = []
+
+# Specify the total number of results you want to collect
+total_results = 200
+total_pages = total_results // search_params["num"]
+
+for pg in range(total_pages):
+    search_params["start"] = pg * search_params["num"]
+    search = GoogleSearch(search_params)
+    search_results = search.get_dict()
+    scholarly_papers = search_results.get("organic_results", [])
+
+    for paper in scholarly_papers:
+        paper_titles.append(paper.get('title', ''))
+        paper_abstracts.append(paper.get('snippet', ''))
+        citation_counts.append(int(paper.get('inline_links', {}).get('cited_by', {}).get('total', 0)))
+        pub_dates.append(paper.get('publication_info', {}).get('summary', ''))
+
+# Create a DataFrame
+papers_df = pd.DataFrame({
+    'Title': paper_titles,
+    'Abstract': paper_abstracts,
+    'Citation Count': citation_counts,
+    'Publication Date': pub_dates
+})
