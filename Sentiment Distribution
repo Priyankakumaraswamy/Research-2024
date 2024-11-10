@@ -1,0 +1,12 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+
+
+plt.figure(figsize=(10, 6))
+sns.countplot(data=papers_df, x='VADER Tone', palette='viridis')
+plt.title('Sentiment Distribution (VADER)')
+plt.xlabel('Sentiment')
+plt.ylabel('Count')
+plt.show()
