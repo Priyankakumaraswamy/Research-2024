@@ -1,0 +1,8 @@
+top_ten_cited = papers_df.nlargest(10, 'Citation Count')[['Title', 'Citation Count']]
+
+plt.figure(figsize=(10, 6))
+sns.barplot(x='Citation Count', y='Title', data=top_ten_cited, palette='viridis')
+plt.title('Top Ten Most Cited Papers')
+plt.xlabel('Citation Count')
+plt.ylabel('Paper Title')
+plt.show()
