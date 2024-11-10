@@ -1,0 +1,6 @@
+plt.figure(figsize=(10, 6))
+sns.countplot(data=papers_df, x='BERT Tone', palette='viridis')
+plt.title('Sentiment Distribution (BERT)')
+plt.xlabel('Sentiment')
+plt.ylabel('Count')
+plt.show()
