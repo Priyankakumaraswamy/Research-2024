@@ -1,0 +1,805 @@
+pip install pandas numpy serpapi transformers scikit-learn matplotlib seaborn
+
+
+ Requirement already satisfied: pandas in /usr/local/lib/python3.10/dist-packages (2.2.2)
+Requirement already satisfied: numpy in /usr/local/lib/python3.10/dist-packages (1.26.4)
+Collecting serpapi
+  Downloading serpapi-0.1.5-py2.py3-none-any.whl.metadata (10 kB)
+Requirement already satisfied: transformers in /usr/local/lib/python3.10/dist-packages (4.46.2)
+Requirement already satisfied: scikit-learn in /usr/local/lib/python3.10/dist-packages (1.5.2)
+Requirement already satisfied: matplotlib in /usr/local/lib/python3.10/dist-packages (3.8.0)
+Requirement already satisfied: seaborn in /usr/local/lib/python3.10/dist-packages (0.13.2)
+Requirement already satisfied: python-dateutil>=2.8.2 in /usr/local/lib/python3.10/dist-packages (from pandas) (2.8.2)
+Requirement already satisfied: pytz>=2020.1 in /usr/local/lib/python3.10/dist-packages (from pandas) (2024.2)
+Requirement already satisfied: tzdata>=2022.7 in /usr/local/lib/python3.10/dist-packages (from pandas) (2024.2)
+Requirement already satisfied: requests in /usr/local/lib/python3.10/dist-packages (from serpapi) (2.32.3)
+Requirement already satisfied: filelock in /usr/local/lib/python3.10/dist-packages (from transformers) (3.16.1)
+Requirement already satisfied: huggingface-hub<1.0,>=0.23.2 in /usr/local/lib/python3.10/dist-packages (from transformers) (0.26.2)
+Requirement already satisfied: packaging>=20.0 in /usr/local/lib/python3.10/dist-packages (from transformers) (24.2)
+Requirement already satisfied: pyyaml>=5.1 in /usr/local/lib/python3.10/dist-packages (from transformers) (6.0.2)
+Requirement already satisfied: regex!=2019.12.17 in /usr/local/lib/python3.10/dist-packages (from transformers) (2024.9.11)
+Requirement already satisfied: safetensors>=0.4.1 in /usr/local/lib/python3.10/dist-packages (from transformers) (0.4.5)
+Requirement already satisfied: tokenizers<0.21,>=0.20 in /usr/local/lib/python3.10/dist-packages (from transformers) (0.20.3)
+Requirement already satisfied: tqdm>=4.27 in /usr/local/lib/python3.10/dist-packages (from transformers) (4.66.6)
+Requirement already satisfied: scipy>=1.6.0 in /usr/local/lib/python3.10/dist-packages (from scikit-learn) (1.13.1)
+Requirement already satisfied: joblib>=1.2.0 in /usr/local/lib/python3.10/dist-packages (from scikit-learn) (1.4.2)
+Requirement already satisfied: threadpoolctl>=3.1.0 in /usr/local/lib/python3.10/dist-packages (from scikit-learn) (3.5.0)
+Requirement already satisfied: contourpy>=1.0.1 in /usr/local/lib/python3.10/dist-packages (from matplotlib) (1.3.0)
+Requirement already satisfied: cycler>=0.10 in /usr/local/lib/python3.10/dist-packages (from matplotlib) (0.12.1)
+Requirement already satisfied: fonttools>=4.22.0 in /usr/local/lib/python3.10/dist-packages (from matplotlib) (4.54.1)
+Requirement already satisfied: kiwisolver>=1.0.1 in /usr/local/lib/python3.10/dist-packages (from matplotlib) (1.4.7)
+Requirement already satisfied: pillow>=6.2.0 in /usr/local/lib/python3.10/dist-packages (from matplotlib) (11.0.0)
+Requirement already satisfied: pyparsing>=2.3.1 in /usr/local/lib/python3.10/dist-packages (from matplotlib) (3.2.0)
+Requirement already satisfied: fsspec>=2023.5.0 in /usr/local/lib/python3.10/dist-packages (from huggingface-hub<1.0,>=0.23.2->transformers) (2024.10.0)
+Requirement already satisfied: typing-extensions>=3.7.4.3 in /usr/local/lib/python3.10/dist-packages (from huggingface-hub<1.0,>=0.23.2->transformers) (4.12.2)
+Requirement already satisfied: six>=1.5 in /usr/local/lib/python3.10/dist-packages (from python-dateutil>=2.8.2->pandas) (1.16.0)
+Requirement already satisfied: charset-normalizer<4,>=2 in /usr/local/lib/python3.10/dist-packages (from requests->serpapi) (3.4.0)
+Requirement already satisfied: idna<4,>=2.5 in /usr/local/lib/python3.10/dist-packages (from requests->serpapi) (3.10)
+Requirement already satisfied: urllib3<3,>=1.21.1 in /usr/local/lib/python3.10/dist-packages (from requests->serpapi) (2.2.3)
+Requirement already satisfied: certifi>=2017.4.17 in /usr/local/lib/python3.10/dist-packages (from requests->serpapi) (2024.8.30)
+Downloading serpapi-0.1.5-py2.py3-none-any.whl (10 kB)
+Installing collected packages: serpapi
+Successfully installed serpapi-0.1.5
+ 
+[ ]
+ !pip install vaderSentiment google-search-results
+
+ Collecting vaderSentiment
+  Downloading vaderSentiment-3.3.2-py2.py3-none-any.whl.metadata (572 bytes)
+Collecting google-search-results
+  Downloading google_search_results-2.4.2.tar.gz (18 kB)
+  Preparing metadata (setup.py) ... done
+Requirement already satisfied: requests in /usr/local/lib/python3.10/dist-packages (from vaderSentiment) (2.32.3)
+Requirement already satisfied: charset-normalizer<4,>=2 in /usr/local/lib/python3.10/dist-packages (from requests->vaderSentiment) (3.4.0)
+Requirement already satisfied: idna<4,>=2.5 in /usr/local/lib/python3.10/dist-packages (from requests->vaderSentiment) (3.10)
+Requirement already satisfied: urllib3<3,>=1.21.1 in /usr/local/lib/python3.10/dist-packages (from requests->vaderSentiment) (2.2.3)
+Requirement already satisfied: certifi>=2017.4.17 in /usr/local/lib/python3.10/dist-packages (from requests->vaderSentiment) (2024.8.30)
+Downloading vaderSentiment-3.3.2-py2.py3-none-any.whl (125 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 126.0/126.0 kB 3.9 MB/s eta 0:00:00
+Building wheels for collected packages: google-search-results
+  Building wheel for google-search-results (setup.py) ... done
+  Created wheel for google-search-results: filename=google_search_results-2.4.2-py3-none-any.whl size=32009 sha256=446bb699cc3e890ff4318c65eef0dac0028b8dd967342b9fafd0da108d09b80a
+  Stored in directory: /root/.cache/pip/wheels/d3/b2/c3/03302d12bb44a2cdff3c9371f31b72c0c4e84b8d2285eeac53
+Successfully built google-search-results
+Installing collected packages: vaderSentiment, google-search-results
+Successfully installed google-search-results-2.4.2 vaderSentiment-3.3.2
+ 
+[ ]
+# Import necessary librariesfrom serpapi import GoogleSearchfrom vaderSentiment.vaderSentiment import SentimentIntensityAnalyzerfrom nltk.sentiment import SentimentIntensityAnalyzerfrom transformers import pipelineimport numpy as npfrom scipy.stats import pearsonrimport matplotlib.pyplot as pltimport pandas as pdimport timefrom datetime import datetimeimport jsonimport osimport seaborn as snsfrom scipy import statsimport warnings
+
+
+arrow_upward
+
+arrow_downward
+
+link
+
+edit
+
+
+delete
+
+more_vert
+
+keyboard_arrow_down
+New
+
+ 
+[ ]
+class ScholarlyDataCollector:    def __init__(self, api_key):        self.base_params = {            "engine": "google_scholar",            "hl": "en",            "num": 10,            "api_key": api_key        }        # Define search terms for multiple rounds        self.search_strategies = {            "biology": [                "cell biology research",                "molecular biology advances",                "genetics research papers"            ],            "chemistry": [                "organic chemistry research",                "chemical synthesis studies",                "inorganic chemistry research"            ],            "physics": [                "quantum physics research",                "particle physics discoveries",                "theoretical physics studies"            ],            "information technology": [                "machine learning research",                "artificial intelligence research",                "computer science advances"            ]        }    def collect_papers(self, search_term, total_pages=3):        """Collect papers for a specific search term"""        paper_data = []        search_params = self.base_params.copy()        search_params["q"] = search_term        try:            for pg in range(total_pages):                # Add delay to respect API rate limits                if pg > 0:                    time.sleep(2)                search_params["start"] = pg * search_params["num"]                search = GoogleSearch(search_params)                results = search.get_dict()                papers = results.get("organic_results", [])                for paper in papers:                    paper_info = {                        'Title': paper.get('title', ''),                        'Abstract': paper.get('snippet', ''),                        'Citation_Count': int(paper.get('inline_links', {}).get('cited_by', {}).get('total', 0)),                        'Publication_Date': paper.get('publication_info', {}).get('summary', ''),                        'Search_Term': search_term,                        'Collection_Date': datetime.now().strftime('%Y-%m-%d'),                        'Collection_Round': None                    }                    paper_data.append(paper_info)        except Exception as e:            print(f"Error collecting data for {search_term}: {str(e)}")        return paper_data    def run_collection_round(self, round_number):        """Run a complete collection round"""        all_papers = []        # Create directory for saving data if it doesn't exist        os.makedirs('data_collection', exist_ok=True)        for field, search_terms in self.search_strategies.items():            if round_number < len(search_terms):                search_term = search_terms[round_number]                print(f"Collecting {field} papers with search term: {search_term}")                papers = self.collect_papers(search_term)                # Add round number and field                for paper in papers:                    paper['Field'] = field                    paper['Collection_Round'] = round_number + 1                all_papers.extend(papers)                # Save intermediate results                self.save_round_data(all_papers, round_number + 1)        return all_papers    def save_round_data(self, papers, round_number):        """Save collected data to CSV and JSON"""        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')        # Save as CSV        df = pd.DataFrame(papers)        csv_filename = f'data_collection/round_{round_number}_data_{timestamp}.csv'        df.to_csv(csv_filename, index=False)        # Save as JSON        json_filename = f'data_collection/round_{round_number}_data_{timestamp}.json'        with open(json_filename, 'w') as f:            json.dump(papers, f, indent=4)        print(f"Saved {len(papers)} papers to {csv_filename} and {json_filename}")    def combine_all_rounds(self, num_rounds):        """Combine data from all rounds"""        all_data = []        # Get list of all CSV files        csv_files = [f for f in os.listdir('data_collection') if f.endswith('.csv')]        for file in csv_files:            df = pd.read_csv(f'data_collection/{file}')            all_data.append(df)        if all_data:            combined_df = pd.concat(all_data, ignore_index=True)            # Remove duplicates based on title            combined_df.drop_duplicates(subset=['Title'], inplace=True)            # Save combined dataset            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')            combined_filename = f'data_collection/combined_dataset_{timestamp}.csv'            combined_df.to_csv(combined_filename, index=False)            print(f"Combined dataset saved to {combined_filename}")            print(f"Total unique papers: {len(combined_df)}")            return combined_df        return Nonedef main():    # Initialize collector with your API key    collector = ScholarlyDataCollector("d6c09f1114f5722aebe6a804c99855547f4499b7323481cc59f56d72c7644e33")    # Run three collection rounds    for round_num in range(3):        print(f"\nStarting collection round {round_num + 1}")        papers = collector.run_collection_round(round_num)        print(f"Collected {len(papers)} papers in round {round_num + 1}")        if round_num < 2:            print("Wait for before running the next round to avoid API limits")    # After all rounds are complete, combine the data    combined_data = collector.combine_all_rounds(3)    if combined_data is not None:        print("\nData collection complete!")        print(f"Final dataset shape: {combined_data.shape}")        print("\nSample of collected data:")        print(combined_data.head())        # Basic statistics        print("\nPapers per field:")        print(combined_data['Field'].value_counts())        print("\nPapers per round:")        print(combined_data['Collection_Round'].value_counts())if __name__ == "__main__":    main()
+
+
+ 
+Starting collection round 1
+Collecting biology papers with search term: cell biology research
+Saved 30 papers to data_collection/round_1_data_20241115_072403.csv and data_collection/round_1_data_20241115_072403.json
+Collecting chemistry papers with search term: organic chemistry research
+Saved 60 papers to data_collection/round_1_data_20241115_072412.csv and data_collection/round_1_data_20241115_072412.json
+Collecting physics papers with search term: quantum physics research
+Saved 90 papers to data_collection/round_1_data_20241115_072419.csv and data_collection/round_1_data_20241115_072419.json
+Collecting information technology papers with search term: machine learning research
+Saved 120 papers to data_collection/round_1_data_20241115_072426.csv and data_collection/round_1_data_20241115_072426.json
+Collected 120 papers in round 1
+Wait for a week before running the next round to avoid API limits
+
+Starting collection round 2
+Collecting biology papers with search term: molecular biology advances
+Saved 30 papers to data_collection/round_2_data_20241115_072436.csv and data_collection/round_2_data_20241115_072436.json
+Collecting chemistry papers with search term: chemical synthesis studies
+Saved 60 papers to data_collection/round_2_data_20241115_072444.csv and data_collection/round_2_data_20241115_072444.json
+Collecting physics papers with search term: particle physics discoveries
+Saved 90 papers to data_collection/round_2_data_20241115_072458.csv and data_collection/round_2_data_20241115_072458.json
+Collecting information technology papers with search term: artificial intelligence research
+Saved 120 papers to data_collection/round_2_data_20241115_072505.csv and data_collection/round_2_data_20241115_072505.json
+Collected 120 papers in round 2
+Wait for a week before running the next round to avoid API limits
+
+Starting collection round 3
+Collecting biology papers with search term: genetics research papers
+Saved 30 papers to data_collection/round_3_data_20241115_072513.csv and data_collection/round_3_data_20241115_072513.json
+Collecting chemistry papers with search term: inorganic chemistry research
+Saved 60 papers to data_collection/round_3_data_20241115_072519.csv and data_collection/round_3_data_20241115_072519.json
+Collecting physics papers with search term: theoretical physics studies
+Saved 90 papers to data_collection/round_3_data_20241115_072525.csv and data_collection/round_3_data_20241115_072525.json
+Collecting information technology papers with search term: computer science advances
+Saved 120 papers to data_collection/round_3_data_20241115_072532.csv and data_collection/round_3_data_20241115_072532.json
+Collected 120 papers in round 3
+Combined dataset saved to data_collection/combined_dataset_20241115_072532.csv
+Total unique papers: 336
+
+Data collection complete!
+Final dataset shape: (336, 8)
+
+Sample of collected data:
+                                               Title  \
+0  Cell biology of protein misfolding: the exampl...   
+1           Cell Biology E-Book: Cell Biology E-Book   
+2                             Molecular cell biology   
+3                            Executable cell biology   
+4                Cell biology: a laboratory handbook   
+
+                                            Abstract  Citation_Count  \
+0  … mechanisms and pathways in cell biology. One...            1116   
+1  … research in cell biology advances quickly, t...            1026   
+2  … ■NEW: Now available for your MP3 player or p...           13362   
+3  … biology to reach its full potential as a mai...             692   
+4  This four-volume laboratory manual contains co...             477   
+
+                                    Publication_Date            Search_Term  \
+0  DJ Selkoe - Nature cell biology, 2004 - nature...  cell biology research   
+1  TD Pollard, WC Earnshaw, J Lippincott-Schwartz...  cell biology research   
+2                HF Lodish - 2008 - books.google.com  cell biology research   
+3  J Fisher, TA Henzinger - Nature biotechnology,...  cell biology research   
+4                 JE Celis - 2006 - books.google.com  cell biology research   
+
+  Collection_Date  Collection_Round    Field  
+0      2024-11-15                 1  biology  
+1      2024-11-15                 1  biology  
+2      2024-11-15                 1  biology  
+3      2024-11-15                 1  biology  
+4      2024-11-15                 1  biology  
+
+Papers per field:
+Field
+biology                   89
+physics                   87
+information technology    82
+chemistry                 78
+Name: count, dtype: int64
+
+Papers per round:
+Collection_Round
+2    113
+3    113
+1    110
+Name: count, dtype: int64
+ 
+[ ]
+ from textblob import TextBlob
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+import re
+from sklearn.preprocessing import StandardScaler
+
+
+class ScholarlyDataPreprocessor:
+    def __init__(self, df):
+        self.df = df.copy()
+        self.vader = SentimentIntensityAnalyzer()
+
+    def clean_publication_date(self):
+        """Extract year from publication date string"""
+        def extract_year(date_str):
+            year_match = re.search(r'\b(19|20)\d{2}\b', str(date_str))
+            if year_match:
+                return int(year_match.group())
+            return None
+
+        self.df['Publication_Year'] = self.df['Publication_Date'].apply(extract_year)
+        current_year = datetime.now().year
+
+        # Handle missing or future years
+        self.df = self.df[self.df['Publication_Year'].notna()]  # Remove rows with no year
+        self.df = self.df[self.df['Publication_Year'] <= current_year]  # Remove future years
+
+        self.df['Years_Since_Publication'] = current_year - self.df['Publication_Year']
+        # Ensure minimum of 1 year to avoid division by zero
+        self.df['Years_Since_Publication'] = self.df['Years_Since_Publication'].clip(lower=1)
+
+        print(f"Extracted publication years. Range: {self.df['Publication_Year'].min()} - {self.df['Publication_Year'].max()}")
+
+    def clean_abstract(self):
+        """Clean and standardize abstract text"""
+        def clean_text(text):
+            text = re.sub(r'[^\w\s.]', ' ', str(text))
+            text = ' '.join(text.split())
+            return text
+
+        self.df['Clean_Abstract'] = self.df['Abstract'].apply(clean_text)
+        self.df['Abstract_Length'] = self.df['Clean_Abstract'].str.len()
+        print(f"Cleaned abstracts. Average length: {self.df['Abstract_Length'].mean():.2f} characters")
+
+    def calculate_citation_metrics(self):
+        """Calculate citation-related metrics"""
+        # Ensure Citation_Count is numeric and non-negative
+        self.df['Citation_Count'] = pd.to_numeric(self.df['Citation_Count'], errors='coerce')
+        self.df['Citation_Count'] = self.df['Citation_Count'].fillna(0).clip(lower=0)
+
+        # Calculate citation rate (citations per year)
+        self.df['Citation_Rate'] = self.df['Citation_Count'] / self.df['Years_Since_Publication']
+
+        # Log transform citations after adding 1 (to handle zeros)
+        self.df['Log_Citations'] = np.log1p(self.df['Citation_Count'])
+
+        print(f"Average citation rate: {self.df['Citation_Rate'].mean():.2f} citations per year")
+
+    def extract_sentiment_features(self):
+        """Extract sentiment features using VADER and TextBlob"""
+        # VADER sentiment
+        self.df['VADER_Scores'] = self.df['Clean_Abstract'].apply(self.vader.polarity_scores)
+        self.df['VADER_Negative'] = self.df['VADER_Scores'].apply(lambda x: x['neg'])
+        self.df['VADER_Neutral'] = self.df['VADER_Scores'].apply(lambda x: x['neu'])
+        self.df['VADER_Positive'] = self.df['VADER_Scores'].apply(lambda x: x['pos'])
+        self.df['VADER_Compound'] = self.df['VADER_Scores'].apply(lambda x: x['compound'])
+
+        # TextBlob sentiment
+        self.df['TextBlob_Sentiment'] = self.df['Clean_Abstract'].apply(
+            lambda x: TextBlob(str(x)).sentiment.polarity
+        )
+
+        print("Extracted sentiment features using VADER and TextBlob")
+
+    def create_field_features(self):
+        """Create one-hot encoded field features"""
+        field_dummies = pd.get_dummies(self.df['Field'], prefix='Field')
+        self.df = pd.concat([self.df, field_dummies], axis=1)
+        print(f"Created one-hot encoded fields: {', '.join(field_dummies.columns)}")
+
+    def normalize_features(self):
+        """Normalize numerical features"""
+        features_to_normalize = [
+            'Citation_Rate', 'Abstract_Length',
+            'VADER_Negative', 'VADER_Neutral', 'VADER_Positive', 'VADER_Compound',
+            'TextBlob_Sentiment'
+        ]
+
+        # Replace infinities with NaN and then fill with mean
+        for feature in features_to_normalize:
+            self.df[feature] = self.df[feature].replace([np.inf, -np.inf], np.nan)
+            self.df[feature] = self.df[feature].fillna(self.df[feature].mean())
+
+        scaler = StandardScaler()
+        self.df[features_to_normalize] = scaler.fit_transform(self.df[features_to_normalize])
+        print(f"Normalized {len(features_to_normalize)} features")
+
+    def remove_outliers(self, columns, n_std=3):
+        """Remove outliers based on z-score"""
+        original_size = len(self.df)
+
+        for column in columns:
+            z_scores = np.abs((self.df[column] - self.df[column].mean()) / self.df[column].std())
+            self.df = self.df[z_scores < n_std]
+
+        removed = original_size - len(self.df)
+        print(f"Removed {removed} outliers ({removed/original_size*100:.1f}% of data)")
+
+    def get_processed_data(self):
+        """Return processed dataframe with selected features"""
+        selected_features = [
+            'Publication_Year', 'Years_Since_Publication',
+            'Citation_Count', 'Citation_Rate', 'Log_Citations',
+            'Abstract_Length',
+            'VADER_Negative', 'VADER_Neutral', 'VADER_Positive', 'VADER_Compound',
+            'TextBlob_Sentiment',
+            'Field_biology', 'Field_chemistry', 'Field_physics', 'Field_information technology'
+        ]
+
+        return self.df[selected_features].copy()
+
+    def print_summary_statistics(self):
+        """Print detailed summary statistics"""
+        print("\nDetailed Summary Statistics:")
+        print("\nCitation Statistics:")
+        print(f"Total papers: {len(self.df)}")
+        print(f"Mean citations: {self.df['Citation_Count'].mean():.2f}")
+        print(f"Median citations: {self.df['Citation_Count'].median():.2f}")
+        print(f"Max citations: {self.df['Citation_Count'].max():.2f}")
+
+        print("\nPublication Year Distribution:")
+        print(self.df['Publication_Year'].value_counts().sort_index().head())
+
+        print("\nSentiment Statistics:")
+        print(f"Mean VADER Compound: {self.df['VADER_Compound'].mean():.3f}")
+        print(f"Mean TextBlob Sentiment: {self.df['TextBlob_Sentiment'].mean():.3f}")
+
+def main():
+    # Load the dataset
+    df = pd.read_csv('/content/data_collection/combined_dataset_20241115_072532.csv')
+    print(f"Loaded dataset with shape: {df.shape}")
+
+    # Initialize preprocessor
+    preprocessor = ScholarlyDataPreprocessor(df)
+
+    # Run preprocessing steps
+    print("\nStarting preprocessing pipeline...")
+    preprocessor.clean_publication_date()
+    preprocessor.clean_abstract()
+    preprocessor.calculate_citation_metrics()
+    preprocessor.extract_sentiment_features()
+    preprocessor.create_field_features()
+    preprocessor.normalize_features()
+
+    # Remove outliers from citation-related features
+    preprocessor.remove_outliers(['Citation_Rate', 'Log_Citations'])
+
+    # Print summary statistics
+    preprocessor.print_summary_statistics()
+
+    # Get processed dataset
+    processed_df = preprocessor.get_processed_data()
+
+    # Save processed dataset
+    output_file = 'processed_data.csv'
+    processed_df.to_csv(output_file, index=False)
+    print(f"\nSaved processed dataset to {output_file}")
+    print(f"Final dataset shape: {processed_df.shape}")
+
+    return processed_df
+
+if __name__ == "__main__":
+    processed_df = main()
+
+ Loaded dataset with shape: (336, 8)
+
+Starting preprocessing pipeline...
+Extracted publication years. Range: 1913 - 2024
+Cleaned abstracts. Average length: 178.15 characters
+Average citation rate: 93.56 citations per year
+Extracted sentiment features using VADER and TextBlob
+Created one-hot encoded fields: Field_biology, Field_chemistry, Field_information technology, Field_physics
+Normalized 7 features
+Removed 13 outliers (3.9% of data)
+
+Detailed Summary Statistics:
+
+Citation Statistics:
+Total papers: 323
+Mean citations: 887.50
+Median citations: 413.00
+Max citations: 12599.00
+
+Publication Year Distribution:
+Publication_Year
+1913    1
+1930    1
+1938    1
+1942    1
+1946    1
+Name: count, dtype: int64
+
+Sentiment Statistics:
+Mean VADER Compound: -0.014
+Mean TextBlob Sentiment: 0.001
+
+Saved processed dataset to processed_data.csv
+Final dataset shape: (323, 15)
+ 
+[ ]
+ class ScholarlyDataAnalyzer:
+    def __init__(self, processed_data_path='processed_data.csv'):
+        self.df = pd.read_csv(processed_data_path)
+
+
+    def plot_citation_distribution(self):
+        """Plot the distribution of citations"""
+        plt.figure(figsize=(12, 6))
+
+        # Create two subplots
+        plt.subplot(1, 2, 1)
+        sns.histplot(self.df['Citation_Count'], bins=50)
+        plt.title('Citation Count Distribution')
+        plt.xlabel('Citations')
+        plt.ylabel('Frequency')
+
+        plt.subplot(1, 2, 2)
+        sns.histplot(self.df['Log_Citations'], bins=50)
+        plt.title('Log-transformed Citation Distribution')
+        plt.xlabel('Log Citations')
+        plt.ylabel('Frequency')
+
+        plt.tight_layout()
+        plt.savefig('citation_distribution.png')
+        plt.close()
+
+    def plot_citation_by_field(self):
+        """Plot citation statistics by field"""
+        plt.figure(figsize=(10, 6))
+
+        field_cols = [col for col in self.df.columns if col.startswith('Field_')]
+        field_citations = []
+
+        for field in field_cols:
+            field_name = field.replace('Field_', '')
+            mean_citations = self.df[self.df[field] == 1]['Citation_Count'].mean()
+            field_citations.append({'Field': field_name, 'Mean Citations': mean_citations})
+
+        field_df = pd.DataFrame(field_citations)
+        sns.barplot(data=field_df, x='Field', y='Mean Citations')
+        plt.xticks(rotation=45)
+        plt.title('Mean Citations by Field')
+        plt.tight_layout()
+        plt.savefig('citations_by_field.png')
+        plt.close()
+
+    def analyze_sentiment_impact(self):
+        """Analyze relationship between sentiment and citations"""
+        sentiment_corr = []
+
+        # Calculate correlations
+        sentiment_features = ['VADER_Compound', 'TextBlob_Sentiment']
+        for feature in sentiment_features:
+            correlation = stats.pearsonr(self.df[feature], self.df['Log_Citations'])
+            sentiment_corr.append({
+                'Feature': feature,
+                'Correlation': correlation[0],
+                'P-value': correlation[1]
+            })
+
+        # Plot sentiment vs citations
+        plt.figure(figsize=(12, 5))
+
+        plt.subplot(1, 2, 1)
+        sns.scatterplot(data=self.df, x='VADER_Compound', y='Log_Citations', alpha=0.5)
+        plt.title('VADER Sentiment vs Log Citations')
+
+        plt.subplot(1, 2, 2)
+        sns.scatterplot(data=self.df, x='TextBlob_Sentiment', y='Log_Citations', alpha=0.5)
+        plt.title('TextBlob Sentiment vs Log Citations')
+
+        plt.tight_layout()
+        plt.savefig('sentiment_impact.png')
+        plt.close()
+
+        return pd.DataFrame(sentiment_corr)
+
+    def temporal_analysis(self):
+        """Analyze citation patterns over time"""
+        plt.figure(figsize=(12, 6))
+
+        sns.scatterplot(data=self.df, x='Publication_Year', y='Citation_Rate')
+        plt.title('Citation Rate by Publication Year')
+        plt.xlabel('Publication Year')
+        plt.ylabel('Citations per Year')
+
+        plt.tight_layout()
+        plt.savefig('temporal_analysis.png')
+        plt.close()
+
+    def print_summary_stats(self):
+        """Print detailed summary statistics"""
+        stats_dict = {
+            'Total Papers': len(self.df),
+            'Mean Citations': self.df['Citation_Count'].mean(),
+            'Median Citations': self.df['Citation_Count'].median(),
+            'Citation Rate (mean)': self.df['Citation_Rate'].mean(),
+            'Years Since Publication (mean)': self.df['Years_Since_Publication'].mean(),
+            'Abstract Length (mean)': self.df['Abstract_Length'].mean()
+        }
+
+        return pd.Series(stats_dict)
+
+def main():
+    # Initialize analyzer
+    analyzer = ScholarlyDataAnalyzer()
+
+    # Run analyses
+    print("\nGenerating visualizations and analyses...")
+
+    # Print summary statistics
+    print("\nSummary Statistics:")
+    print(analyzer.print_summary_stats())
+
+    # Generate plots
+    analyzer.plot_citation_distribution()
+    analyzer.plot_citation_by_field()
+
+    # Analyze sentiment impact
+    sentiment_corr = analyzer.analyze_sentiment_impact()
+    print("\nSentiment Correlation Analysis:")
+    print(sentiment_corr)
+
+    # Temporal analysis
+    analyzer.temporal_analysis()
+
+    print("\nAnalysis complete. Visualizations saved as PNG files.")
+
+if __name__ == "__main__":
+    main()
+
+ 
+Generating visualizations and analyses...
+
+Summary Statistics:
+Total Papers                      323.000000
+Mean Citations                    887.498452
+Median Citations                  413.000000
+Citation Rate (mean)               -0.153804
+Years Since Publication (mean)     21.634675
+Abstract Length (mean)              0.029734
+dtype: float64
+
+Sentiment Correlation Analysis:
+              Feature  Correlation   P-value
+0      VADER_Compound     0.034915  0.531800
+1  TextBlob_Sentiment    -0.017881  0.748862
+
+Analysis complete. Visualizations saved as PNG files.
+ 
+[ ]
+ import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import classification_report, confusion_matrix, roc_curve, auc
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+class BinaryCitationClassifier:
+    def __init__(self, data_path='processed_data.csv'):
+        self.df = pd.read_csv(data_path)
+        self.models = {
+            'Logistic Regression': LogisticRegression(max_iter=1000, random_state=42),
+            'Random Forest': RandomForestClassifier(n_estimators=100, random_state=42),
+            'SVM': SVC(kernel='rbf', random_state=42, probability=True)
+        }
+        self.results = {}
+
+    def create_binary_categories(self):
+        """Create binary citation categories based on median"""
+        median = self.df['Citation_Count'].median()
+        self.df['Citation_Category'] = (self.df['Citation_Count'] > median).astype(int)
+
+        print("\nBinary Citation Categories Distribution:")
+        print(self.df['Citation_Category'].value_counts())
+        print("\nCategory Thresholds:")
+        print(f"Low: ≤ {median:.0f} citations")
+        print(f"High: > {median:.0f} citations")
+
+        # Print average citations per category
+        print("\nAverage Citations per Category:")
+        print(self.df.groupby('Citation_Category')['Citation_Count'].agg(['mean', 'min', 'max']))
+
+    def prepare_data(self):
+        """Prepare features and target variable"""
+        feature_columns = [
+            'Publication_Year', 'Years_Since_Publication',
+            'Abstract_Length',
+            'VADER_Negative', 'VADER_Neutral', 'VADER_Positive', 'VADER_Compound',
+            'TextBlob_Sentiment',
+            'Field_biology', 'Field_chemistry', 'Field_physics', 'Field_information technology'
+        ]
+
+        X = self.df[feature_columns]
+        y = self.df['Citation_Category']
+
+        # Split data
+        X_train, X_test, y_train, y_test = train_test_split(
+            X, y, test_size=0.2, random_state=42, stratify=y
+        )
+
+        # Scale features
+        scaler = StandardScaler()
+        X_train_scaled = scaler.fit_transform(X_train)
+        X_test_scaled = scaler.transform(X_test)
+
+        return X_train_scaled, X_test_scaled, y_train, y_test, feature_columns
+
+    def train_and_evaluate(self):
+        """Train and evaluate all models"""
+        X_train, X_test, y_train, y_test, feature_columns = self.prepare_data()
+
+        for name, model in self.models.items():
+            print(f"\nTraining {name}...")
+
+            # Train model
+            model.fit(X_train, y_train)
+
+            # Make predictions
+            y_pred = model.predict(X_test)
+            y_prob = model.predict_proba(X_test)[:, 1] if hasattr(model, 'predict_proba') else None
+
+            # Calculate ROC curve and AUC
+            if y_prob is not None:
+                fpr, tpr, _ = roc_curve(y_test, y_prob)
+                roc_auc = auc(fpr, tpr)
+            else:
+                fpr, tpr, roc_auc = None, None, None
+
+            # Store results
+            self.results[name] = {
+                'Classification_Report': classification_report(y_test, y_pred),
+                'Confusion_Matrix': confusion_matrix(y_test, y_pred),
+                'CV_Scores': cross_val_score(model, X_train, y_train, cv=5),
+                'ROC': (fpr, tpr, roc_auc) if y_prob is not None else None,
+                'y_test': y_test,
+                'y_pred': y_pred
+            }
+
+            # Store feature importance
+            if hasattr(model, 'feature_importances_'):
+                self.results[name]['feature_importance'] = dict(
+                    zip(feature_columns, model.feature_importances_)
+                )
+            elif hasattr(model, 'coef_'):
+                self.results[name]['feature_importance'] = dict(
+                    zip(feature_columns, np.abs(model.coef_[0]))
+                )
+
+    def plot_results(self):
+        """Plot confusion matrices, ROC curves, and feature importance"""
+        fig, axes = plt.subplots(2, len(self.models), figsize=(15, 10))
+
+        # Plot confusion matrices and ROC curves
+        for i, (name, results) in enumerate(self.results.items()):
+            # Confusion Matrix
+            sns.heatmap(results['Confusion_Matrix'], annot=True, fmt='d',
+                       ax=axes[0, i], cmap='Blues')
+            axes[0, i].set_title(f'{name}\nConfusion Matrix')
+            axes[0, i].set_xlabel('Predicted')
+            axes[0, i].set_ylabel('Actual')
+
+            # Feature Importance
+            if 'feature_importance' in results:
+                importances = pd.Series(results['feature_importance'])
+                importances.sort_values().plot(kind='barh', ax=axes[1, i])
+                axes[1, i].set_title(f'{name}\nFeature Importance')
+
+        plt.tight_layout()
+        plt.savefig('binary_classification_results.png')
+        plt.close()
+
+        # Plot ROC curves
+        plt.figure(figsize=(8, 6))
+        for name, results in self.results.items():
+            if results['ROC'] is not None:
+                fpr, tpr, roc_auc = results['ROC']
+                plt.plot(fpr, tpr, label=f'{name} (AUC = {roc_auc:.2f})')
+
+        plt.plot([0, 1], [0, 1], 'k--')
+        plt.xlabel('False Positive Rate')
+        plt.ylabel('True Positive Rate')
+        plt.title('ROC Curves')
+        plt.legend()
+        plt.savefig('roc_curves.png')
+        plt.close()
+
+    def print_results(self):
+        """Print detailed results for each model"""
+        print("\nModel Performance Summary:")
+        print("-" * 50)
+
+        for name, results in self.results.items():
+            print(f"\n{name}:")
+            print("\nClassification Report:")
+            print(results['Classification_Report'])
+            print(f"Cross-validation accuracy: {results['CV_Scores'].mean():.4f} "
+                  f"(±{results['CV_Scores'].std():.4f})")
+
+            if 'feature_importance' in results:
+                print("\nTop 5 Important Features:")
+                importances = pd.Series(results['feature_importance'])
+                print(importances.sort_values(ascending=False).head())
+
+def main():
+    # Initialize classifier
+    classifier = BinaryCitationClassifier()
+
+    # Create binary categories
+    classifier.create_binary_categories()
+
+    # Train and evaluate models
+    classifier.train_and_evaluate()
+
+    # Print results
+    classifier.print_results()
+
+    # Plot results
+    classifier.plot_results()
+
+    print("\nAnalysis complete. Results visualizations saved as 'binary_classification_results.png' and 'roc_curves.png'")
+
+if __name__ == "__main__":
+    main()
+
+ 
+Binary Citation Categories Distribution:
+Citation_Category
+0    162
+1    161
+Name: count, dtype: int64
+
+Category Thresholds:
+Low: ≤ 413 citations
+High: > 413 citations
+
+Average Citations per Category:
+                          mean  min    max
+Citation_Category                         
+0                   214.925926    7    413
+1                  1564.248447  414  12599
+
+Training Logistic Regression...
+
+Training Random Forest...
+
+Training SVM...
+
+Model Performance Summary:
+--------------------------------------------------
+
+Logistic Regression:
+
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.50      0.73      0.59        33
+           1       0.47      0.25      0.33        32
+
+    accuracy                           0.49        65
+   macro avg       0.49      0.49      0.46        65
+weighted avg       0.49      0.49      0.46        65
+
+Cross-validation accuracy: 0.5782 (±0.0923)
+
+Top 5 Important Features:
+Field_biology      0.371515
+VADER_Negative     0.306144
+VADER_Positive     0.168902
+Field_physics      0.155696
+Abstract_Length    0.139853
+dtype: float64
+
+Random Forest:
+
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.58      0.55      0.56        33
+           1       0.56      0.59      0.58        32
+
+    accuracy                           0.57        65
+   macro avg       0.57      0.57      0.57        65
+weighted avg       0.57      0.57      0.57        65
+
+Cross-validation accuracy: 0.5118 (±0.0462)
+
+Top 5 Important Features:
+Abstract_Length            0.146534
+Publication_Year           0.140018
+Years_Since_Publication    0.138293
+TextBlob_Sentiment         0.135634
+VADER_Neutral              0.100023
+dtype: float64
+
+SVM:
+
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.52      0.67      0.59        33
+           1       0.52      0.38      0.44        32
+
+    accuracy                           0.52        65
+   macro avg       0.52      0.52      0.51        65
+weighted avg       0.52      0.52      0.51        65
+
+Cross-validation accuracy: 0.5934 (±0.0731)
+
+Analysis complete. Results visualizations saved as 'binary_classification_results.png' and 'roc_curves.png'
+Colab paid products - Cancel contracts here
+
+fiber_manual_record
+
+close
