@@ -1,0 +1,51 @@
+# Define lists of positive and negative words
+positive_words = ['good', 'great', 'excellent', 'happy', 'joyful', 'wonderful', 'positive', 'amazing', 'lovely']
+negative_words = ['bad', 'terrible', 'awful', 'sad', 'depressing', 'negative', 'horrible', 'unhappy', 'miserable']
+
+def analyze_sentiment(text):
+   # Normalize the text to lowercase
+   text = text.lower()
+
+   # Tokenize the text by spaces (this is a very simple approach)
+   words = text.split()
+
+   # Initialize counters for positive and negative words
+   positive_count = 0
+   negative_count = 0
+
+   # Count the occurrences of each type of word
+   for word in words:
+       if word in positive_words:
+           positive_count += 1
+       elif word in negative_words:
+           negative_count += 1
+
+   # Analyze the sentiment based on the counts
+   if positive_count > negative_count:
+       return "Positive"
+   elif negative_count > positive_count:
+       return "Negative"
+   else:
+       return "Neutral"
+
+# Example usage
+#text = "It was a wonderful day, the weather was amazing and everyone was happy."
+
+text1 = "Beyond the learning curve: a review of complex cases in robotic thoracic surgery"
+text2 = "CVDNet: A novel deep learning architecture for detection of coronavirus (Covid-19) from chest x-ray images"
+text3 = "Towards the sustainable development of smart cities through mass video surveillance: A response to the COVID-19 pandemic"
+text4 = "Mapping the Educational Applications of Augmented Reality Research using A Bibliometric Analysis"
+text5 = "Artificial intelligence for the early detection of colorectal cancer: A comprehensive review of its advantages and misconceptions"
+
+#sentiment = analyze_sentiment(text)
+sentiment = analyze_sentiment(text1)
+sentiment1 = analyze_sentiment(text2)
+sentiment2 = analyze_sentiment(text3)
+sentiment3 = analyze_sentiment(text4)
+sentiment4 = analyze_sentiment(text5)
+
+print(f"Sentiment: {sentiment}")
+print(f"Sentiment: {sentiment1}")
+print(f"Sentiment: {sentiment2}")
+print(f"Sentiment: {sentiment3}")
+print(f"Sentiment: {sentiment4}")
